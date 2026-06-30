@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/clientes") // Ajustado para minúsculo conforme a imagem
-@CrossOrigin(origins = "*")  // Configuração simples de CORS solicitada na nota
+@RequestMapping("/clientes")
+@CrossOrigin(origins = "*")
 public class ClienteController {
 
     @Autowired

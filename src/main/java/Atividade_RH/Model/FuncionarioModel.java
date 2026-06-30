@@ -3,7 +3,7 @@ package Atividade_RH.Model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Fun_table")
+@Table(name = "tab_funcionarios")
 public class FuncionarioModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
