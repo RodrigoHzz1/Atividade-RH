@@ -1,7 +1,8 @@
-package Atividade_RH.Dto;
+package Atividade_RH.DTO;
 
 public class FuncionarioResponseDTO {
 
+    private Long id; // <-- CORREÇÃO: O ID agora é enviado para o Front-end
     private String nome;
     private String telefone;
     private String email;
@@ -11,13 +12,18 @@ public class FuncionarioResponseDTO {
     public FuncionarioResponseDTO() {
     }
 
-    public FuncionarioResponseDTO(String nome, String telefone, String email, String cargo, String setor) {
+    public FuncionarioResponseDTO(Long id, String nome, String telefone, String email, String cargo, String setor) {
+        this.id = id;
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
         this.cargo = cargo;
         this.setor = setor;
     }
+
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }

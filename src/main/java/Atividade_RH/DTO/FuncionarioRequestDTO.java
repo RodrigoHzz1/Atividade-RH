@@ -1,4 +1,4 @@
-package Atividade_RH.Dto;
+package Atividade_RH.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +34,7 @@ public class FuncionarioRequestDTO {
         this.setor = setor;
     }
 
+    // Getters e Setters
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 

@@ -1,7 +1,7 @@
 package Atividade_RH.Service;
 
-import Atividade_RH.Dto.FuncionarioRequestDTO;
-import Atividade_RH.Dto.FuncionarioResponseDTO;
+import Atividade_RH.DTO.FuncionarioRequestDTO;
+import Atividade_RH.DTO.FuncionarioResponseDTO;
 import Atividade_RH.Model.FuncionarioModel;
 import Atividade_RH.Repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,9 @@ public class FuncionarioService {
     private FuncionarioRepository repository;
 
     public List<FuncionarioResponseDTO> listarTodos() {
-        return repository
-                .findAll()
-                .stream()
+        return repository.findAll().stream()
                 .map(f -> new FuncionarioResponseDTO(
+                        f.getId(), // Enviando o ID corretamente
                         f.getNome(),
                         f.getTelefone(),
                         f.getEmail(),
@@ -42,9 +41,12 @@ public class FuncionarioService {
         novoFuncionario.setCargo(dto.getCargo());
         novoFuncionario.setSetor(dto.getSetor());
 
+        // O JPA gera o ID automaticamente ao salvar no banco
         repository.save(novoFuncionario);
 
+        // CORREÇÃO: Passando o ID gerado para o construtor do DTO
         return new FuncionarioResponseDTO(
+                novoFuncionario.getId(),
                 novoFuncionario.getNome(),
                 novoFuncionario.getTelefone(),
                 novoFuncionario.getEmail(),
@@ -80,7 +82,9 @@ public class FuncionarioService {
 
         repository.save(funcionarioExistente);
 
+        // CORREÇÃO: Passando o ID existente para o construtor do DTO
         return new FuncionarioResponseDTO(
+                funcionarioExistente.getId(),
                 funcionarioExistente.getNome(),
                 funcionarioExistente.getTelefone(),
                 funcionarioExistente.getEmail(),
