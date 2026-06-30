@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -61,10 +62,23 @@ public class ClienteService {
     }
 
     public ClienteResponseDTO atualizarCliente(Long id, ClienteRequestDTO dto) {
-
+        // 1. Busca o cliente que será editado
         ClienteModel clienteExistente = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
+        // 2. CORREÇÃO DO ERRO: Valida se o E-mail já pertence a OUTRO cliente
+        Optional<ClienteModel> clienteComEmail = repository.findByEmail(dto.getEmail());
+        if (clienteComEmail.isPresent() && clienteComEmail.get().getId() != id) {
+            throw new RuntimeException("Este E-mail já está em uso por outro cliente");
+        }
+
+        // 3. CORREÇÃO DO ERRO: Valida se o CPF já pertence a OUTRO cliente
+        Optional<ClienteModel> clienteComCpf = repository.findByCpf(dto.getCpf());
+        if (clienteComCpf.isPresent() && clienteComCpf.get().getId() != id) {
+            throw new RuntimeException("Este CPF já está em uso por outro cliente");
+        }
+
+        // 4. Se passou pelas validações, atualiza com segurança
         clienteExistente.setNome(dto.getNome());
         clienteExistente.setEmail(dto.getEmail());
         clienteExistente.setTelefone(dto.getTelefone());

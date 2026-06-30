@@ -34,6 +34,7 @@ public class ClienteController {
                 .body(Map.of("Mensagem", "Cliente cadastrado com sucesso"));
     }
 
+    // Item 1 da imagem: Mapeamento de Edição
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> atualizar(@PathVariable Long id, @RequestBody ClienteRequestDTO dto) {
         service.atualizarCliente(id, dto);
@@ -42,6 +43,7 @@ public class ClienteController {
                 .body(Map.of("Mensagem", "Cliente atualizado com sucesso"));
     }
 
+    // Item 2 da imagem: Mapeamento de Deleção (Garante que não dê erro HTTP 405)
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> deletar(@PathVariable Long id) {
         service.deletarCliente(id);
