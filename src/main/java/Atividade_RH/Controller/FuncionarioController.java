@@ -1,48 +1,52 @@
 package Atividade_RH.Controller;
 
-import Atividade_RH.DTO.FuncionarioRequestDTO;
-import Atividade_RH.DTO.FuncionarioResponseDTO;
+import Atividade_RH.Dto.FuncionarioRequestDTO;
+import Atividade_RH.Dto.FuncionarioResponseDTO;
 import Atividade_RH.Service.FuncionarioService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/funcionarios")
-@CrossOrigin(origins = "*") // Habilita o CORS para consumo do Front-end sem bloqueios
+@CrossOrigin(origins = "*") // Permite o consumo do Front-end sem bloqueios CORS
 public class FuncionarioController {
 
     @Autowired
     private FuncionarioService service;
 
     @GetMapping
-    public ResponseEntity<List<FuncionarioResponseDTO>> listar() {
-        return ResponseEntity.ok(service.listarTodos());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<FuncionarioResponseDTO> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorId(id));
+    public ResponseEntity<List<FuncionarioResponseDTO>> listarTodos() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(service.listarTodos());
     }
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@RequestBody @Valid FuncionarioRequestDTO dto) {
+    public ResponseEntity<Map<String, Object>> salvar(@RequestBody FuncionarioRequestDTO dto) {
         service.salvarFuncionario(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(Map.of("Mensagem", "Funcionário cadastrado com sucesso"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FuncionarioResponseDTO> atualizar(@PathVariable Long id, @RequestBody @Valid FuncionarioRequestDTO dto) {
-        return ResponseEntity.ok(service.atualizarFuncionario(id, dto));
+    public ResponseEntity<Map<String, Object>> atualizar(@PathVariable Long id, @RequestBody FuncionarioRequestDTO dto) {
+        service.atualizarFuncionario(id, dto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Map.of("Mensagem", "Funcionário atualizado com sucesso"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deletar(@PathVariable Long id) {
         service.deletarFuncionario(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Map.of("Mensagem", "Funcionário deletado com sucesso"));
     }
 }

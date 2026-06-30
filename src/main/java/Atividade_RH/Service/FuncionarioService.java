@@ -1,13 +1,14 @@
 package Atividade_RH.Service;
 
-import Atividade_RH.DTO.FuncionarioRequestDTO; // Adicionado import que faltava
-import Atividade_RH.DTO.FuncionarioResponseDTO;
+import Atividade_RH.Dto.FuncionarioRequestDTO;
+import Atividade_RH.Dto.FuncionarioResponseDTO;
 import Atividade_RH.Model.FuncionarioModel;
 import Atividade_RH.Repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FuncionarioService {
@@ -15,93 +16,76 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository repository;
 
-    // READ - Listar todos os funcionários
     public List<FuncionarioResponseDTO> listarTodos() {
         return repository
                 .findAll()
                 .stream()
                 .map(f -> new FuncionarioResponseDTO(
                         f.getNome(),
+                        f.getTelefone(),
                         f.getEmail(),
-                        f.getSetor(),
-                        f.getCargo() // Alterado de salario para cargo
+                        f.getCargo(),
+                        f.getSetor()
                 ))
                 .toList();
     }
 
-    // READ - Buscar um funcionário específico por ID
-    public FuncionarioResponseDTO buscarPorId(Long id) {
-        FuncionarioModel funcionario = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
-
-        return new FuncionarioResponseDTO(
-                funcionario.getNome(),
-                funcionario.getEmail(),
-                funcionario.getSetor(),
-                funcionario.getCargo() // Alterado de salario para cargo
-        );
-    }
-
-    // CREATE - Salvar funcionário com validações de E-mail e CPF
-    public void salvarFuncionario(FuncionarioRequestDTO dto) {
+    public FuncionarioResponseDTO salvarFuncionario(FuncionarioRequestDTO dto) {
         if (repository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new RuntimeException("Funcionário já cadastrado com este e-mail");
-        }
-
-        if (repository.findByCpf(dto.getCpf()).isPresent()) {
-            throw new RuntimeException("Funcionário já cadastrado com este CPF");
+            throw new RuntimeException("Funcionário já cadastrado com este E-mail");
         }
 
         FuncionarioModel novoFuncionario = new FuncionarioModel();
         novoFuncionario.setNome(dto.getNome());
-        novoFuncionario.setEmail(dto.getEmail());
-        novoFuncionario.setCpf(dto.getCpf());
         novoFuncionario.setTelefone(dto.getTelefone());
+        novoFuncionario.setEmail(dto.getEmail());
+        novoFuncionario.setCargo(dto.getCargo());
         novoFuncionario.setSetor(dto.getSetor());
-        novoFuncionario.setCargo(dto.getCargo()); // Alterado de salario para cargo
 
         repository.save(novoFuncionario);
+
+        return new FuncionarioResponseDTO(
+                novoFuncionario.getNome(),
+                novoFuncionario.getTelefone(),
+                novoFuncionario.getEmail(),
+                novoFuncionario.getCargo(),
+                novoFuncionario.getSetor()
+        );
     }
 
-    // UPDATE - Atualizar dados do funcionário
+    public void deletarFuncionario(Long id) {
+        FuncionarioModel funcionario = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+
+        repository.delete(funcionario);
+    }
+
     public FuncionarioResponseDTO atualizarFuncionario(Long id, FuncionarioRequestDTO dto) {
+        // 1. Busca o funcionário que vai ser editado
         FuncionarioModel funcionarioExistente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
 
-        repository.findByEmail(dto.getEmail()).ifPresent(f -> {
-            if (!f.getId().equals(id)) {
-                throw new RuntimeException("Este e-mail já está sendo usado por outro funcionário");
-            }
-        });
+        // 2. CORREÇÃO CRÍTICA: Ignora o próprio ID para permitir a edição do e-mail original
+        Optional<FuncionarioModel> funcionarioComEmail = repository.findByEmail(dto.getEmail());
+        if (funcionarioComEmail.isPresent() && funcionarioComEmail.get().getId() != id) {
+            throw new RuntimeException("Este E-mail já está em uso por outro funcionário");
+        }
 
-        repository.findByCpf(dto.getCpf()).ifPresent(f -> {
-            if (!f.getId().equals(id)) {
-                throw new RuntimeException("Este CPF já está sendo usado por outro funcionário");
-            }
-        });
-
+        // 3. Atualiza os dados de forma segura
         funcionarioExistente.setNome(dto.getNome());
-        funcionarioExistente.setEmail(dto.getEmail());
-        funcionarioExistente.setCpf(dto.getCpf());
         funcionarioExistente.setTelefone(dto.getTelefone());
+        funcionarioExistente.setEmail(dto.getEmail());
+        funcionarioExistente.setCargo(dto.getCargo());
         funcionarioExistente.setSetor(dto.getSetor());
-        funcionarioExistente.setCargo(dto.getCargo()); // Alterado de salario para cargo
 
         repository.save(funcionarioExistente);
 
         return new FuncionarioResponseDTO(
                 funcionarioExistente.getNome(),
+                funcionarioExistente.getTelefone(),
                 funcionarioExistente.getEmail(),
-                funcionarioExistente.getSetor(),
-                funcionarioExistente.getCargo() // Alterado de salario para cargo
+                funcionarioExistente.getCargo(),
+                funcionarioExistente.getSetor()
         );
-    }
-
-    // DELETE - Deletar funcionário por ID
-    public void deletarFuncionario(Long id) {
-        FuncionarioModel funcionario = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
-
-        repository.delete(funcionario);
     }
 }

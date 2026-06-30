@@ -5,46 +5,43 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "tab_funcionarios")
 public class FuncionarioModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(nullable = false, length = 200)
     private String nome;
+
+    @Column(nullable = false)
+    private String telefone;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
-    private String telefone;
+    private String cargo;
 
     @Column(nullable = false)
     private String setor;
 
-    @Column(nullable = false)
-    private String cargo; // Alterado de double para String conforme a imagem
-
-    @Column(nullable = false, unique = true) // Adicionado para suportar a validação da Service
-    private String cpf;
-
     public FuncionarioModel() {
     }
 
-    public FuncionarioModel(Long id, String nome, String email, String telefone, String setor, String cargo, String cpf) {
+    public FuncionarioModel(long id, String nome, String telefone, String email, String cargo, String setor) {
         this.id = id;
         this.nome = nome;
-        this.email = email;
         this.telefone = telefone;
-        this.setor = setor;
+        this.email = email;
         this.cargo = cargo;
-        this.cpf = cpf;
+        this.setor = setor;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -56,14 +53,6 @@ public class FuncionarioModel {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getTelefone() {
         return telefone;
     }
@@ -72,12 +61,12 @@ public class FuncionarioModel {
         this.telefone = telefone;
     }
 
-    public String getSetor() {
-        return setor;
+    public String getEmail() {
+        return email;
     }
 
-    public void setSetor(String setor) {
-        this.setor = setor;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCargo() {
@@ -88,11 +77,11 @@ public class FuncionarioModel {
         this.cargo = cargo;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getSetor() {
+        return setor;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setSetor(String setor) {
+        this.setor = setor;
     }
 }
