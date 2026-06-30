@@ -1,7 +1,7 @@
 package Atividade_RH.Controller;
 
-import Atividade_RH.Dto.ClienteRequestDTO;
-import Atividade_RH.Dto.ClienteResponseDTO;
+import Atividade_RH.DTO.ClienteRequestDTO;
+import Atividade_RH.DTO.ClienteResponseDTO;
 import Atividade_RH.Service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

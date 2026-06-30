@@ -1,7 +1,7 @@
 package Atividade_RH.Service;
 
-import Atividade_RH.Dto.FuncionarioRequestDTO; // Adicionado import que faltava
-import Atividade_RH.Dto.FuncionarioResponseDTO;
+import Atividade_RH.DTO.FuncionarioRequestDTO; // Adicionado import que faltava
+import Atividade_RH.DTO.FuncionarioResponseDTO;
 import Atividade_RH.Model.FuncionarioModel;
 import Atividade_RH.Repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

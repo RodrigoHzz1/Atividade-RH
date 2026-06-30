@@ -1,7 +1,7 @@
 package Atividade_RH.Controller;
 
-import Atividade_RH.Dto.FuncionarioRequestDTO;
-import Atividade_RH.Dto.FuncionarioResponseDTO;
+import Atividade_RH.DTO.FuncionarioRequestDTO;
+import Atividade_RH.DTO.FuncionarioResponseDTO;
 import Atividade_RH.Service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package Atividade_RH.Service;
 
-import Atividade_RH.Dto.ClienteRequestDTO;
-import Atividade_RH.Dto.ClienteResponseDTO;
+import Atividade_RH.DTO.ClienteRequestDTO;
+import Atividade_RH.DTO.ClienteResponseDTO;
 import Atividade_RH.Model.ClienteModel;
 import Atividade_RH.Repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;

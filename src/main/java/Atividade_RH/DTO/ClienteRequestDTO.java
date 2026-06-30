@@ -1,4 +1,4 @@
-package Atividade_RH.Dto;
+package Atividade_RH.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package Atividade_RH.Dto;
+package Atividade_RH.DTO;
 
 public class ClienteResponseDTO {
 
