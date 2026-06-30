@@ -21,6 +21,7 @@ public class ClienteService {
                 .findAll()
                 .stream()
                 .map(c -> new ClienteResponseDTO(
+                        c.getId(), // <-- CORREÇÃO: Enviando o ID para a listagem
                         c.getNome(),
                         c.getEmail(),
                         c.getTelefone(),
@@ -44,9 +45,12 @@ public class ClienteService {
         novoCliente.setTelefone(dto.getTelefone());
         novoCliente.setCpf(dto.getCpf());
 
+        // O JPA gera o ID automaticamente ao salvar no banco
         repository.save(novoCliente);
 
+        // CORREÇÃO: Passando o ID gerado para o construtor do DTO
         return new ClienteResponseDTO(
+                novoCliente.getId(), // <-- CORREÇÃO
                 novoCliente.getNome(),
                 novoCliente.getEmail(),
                 novoCliente.getTelefone(),
@@ -86,7 +90,9 @@ public class ClienteService {
 
         repository.save(clienteExistente);
 
+        // CORREÇÃO: Passando o ID existente para o construtor do DTO
         return new ClienteResponseDTO(
+                clienteExistente.getId(), // <-- CORREÇÃO
                 clienteExistente.getNome(),
                 clienteExistente.getEmail(),
                 clienteExistente.getTelefone(),
