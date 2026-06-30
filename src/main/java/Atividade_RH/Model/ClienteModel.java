@@ -19,7 +19,7 @@ public class ClienteModel {
     @Column(nullable = false)
     private String telefone;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String cpf;
 
     public ClienteModel() {
